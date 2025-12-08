@@ -184,6 +184,16 @@ Stores
 This section is where Fastly allows you to insert custom VCL logic to
 decide who gets into the website and who is routed to the waiting room.
 
+## Please keep your fastly APIs handy as you need to to check currently active VCL snippet and in case you need to revert your waiting room feature 1 way is login to your admin and comment/delete VCL policies but if and if for some reason your admin also shows waiting-room page then you can call curl api like this
+
+![revert](https://private-user-images.githubusercontent.com/17334109/523930873-ebacb9d7-95d0-4abd-baff-0d1e804e3e52.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMjM1MDksIm5iZiI6MTc2NTIyMzIwOSwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MzA4NzMtZWJhY2I5ZDctOTVkMC00YWJkLWJhZmYtMGQxZTgwNGUzZTUyLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE5NDY0OVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWE0YTlkMWQ3OWExNGU2M2M5OTAwZGRmYTgyMDQ5YzI1ZThjYTc2ZjA3NGZkYjUzYmFiMTM4Mzg0MGM0ZTA0YTkmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.OGj2K3_0zXcwDMI0XSDMVR5yD9kUJnS0E3P5UJvSje4)
+
+or here is CURL request 
+'''
+curl --location --request PUT 'https://api.fastly.com/service/XXXXXXXXXXXXXXXXXX/version/748/activate' \
+--header 'Fastly-Key: XXXXXXXXX-XXXXXXXXX'
+'''
+
 ------------------------------------------------------------------------
 
 3. Creating a Custom VCL Snippet
@@ -251,7 +261,7 @@ Priority:10
 Name:waiting_room_check
 VCL:
 ```
-if (req.http.host == "admin.ecom.gillcapitalinternal.com") {
+if (req.http.host == "admin.hm.com") {
 return(pass)                                                 ;
 }
 
