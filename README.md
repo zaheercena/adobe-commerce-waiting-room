@@ -90,6 +90,31 @@ Waiting Room – Detailed Technical & Operational Documentation
          │ - 5-15ms latency       │
          └────────────────────────┘
 ```
+
+## 1.3 AWS Lambda + ElastiCache Redis (Session Management)
+
+The waiting room uses a **serverless API** to track concurrent users in real-time.
+
+### Components:
+- **AWS Lambda**: Node.js function that handles session management
+- **ElastiCache Redis**: Stores active session counts with TTL
+- **API Gateway**: Exposes Lambda endpoints to Fastly and waiting room page
+
+### Lambda Endpoints:
+- `GET /health` - Health check
+- `GET /check?session_id=xxx` - Check if user can enter
+- `GET /enter?session_id=xxx` - Create session and allow entry
+- `GET /status` - Get current user count
+- `GET /exit?session_id=xxx` - Remove session
+
+### Environment Variables:
+```bash
+REDIS_HOST=your-redis-cluster.cache.amazonaws.com
+REDIS_PORT=6379
+MAX_USERS=5000
+SESSION_TIMEOUT=1800
+
+
 Overview
 
 This document provides a complete end-to-end explanation of how to
