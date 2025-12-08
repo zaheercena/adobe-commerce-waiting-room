@@ -320,7 +320,7 @@ if (req.url.path == "/waiting-room-th.html" || req.url.path == "/waiting-room-id
 
 -------------------------------------VCL Snippet End-------------------------------------
 
-4. How the Waiting Room Actually Works (Conceptual Flow)
+# 4. How the Waiting Room Actually Works (Conceptual Flow)
 
 1. User visits the website
 - They request /, /products/abc, /category/dresses, etc.
@@ -392,7 +392,63 @@ Screenshot Reference for AWS Configure
 ![lambda-api-gateway-configuration](https://private-user-images.githubusercontent.com/17334109/523917888-c24b1459-88ac-474c-b9fd-bb6045a4403e.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMjE1MzYsIm5iZiI6MTc2NTIyMTIzNiwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MTc4ODgtYzI0YjE0NTktODhhYy00NzRjLWI5ZmQtYmI2MDQ1YTQ0MDNlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE5MTM1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTdkNjgzNGE2MDFkYjgyNjEyYjVjNTk0MDBiOGNjZjgwYmMzOGVmZTM2YTU1OGY1MDE4Yjg2NTBjM2Q2M2JhMWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Ezx3q6H-eEe5UStbm78pluMsHkYdQlts7hrDAe5HUV0)
 
 
+# 5. Troubleshooting
 
+### Issue: Lambda timeout errors
+**Solution**: Increase Lambda timeout to 30s and check VPC/Security Group settings
+
+### Issue: Redis connection failed
+**Solution**: Ensure Lambda is in same VPC as Redis and security group allows port 6379
+
+### Issue: Waiting room stuck on "Checking availability"
+**Solution**: Check CORS headers in Lambda response and verify API Gateway URL in HTML
+
+### Issue: All users see waiting room
+**Solution**: Check MAX_USERS environment variable and Redis connection
+
+### Issue: Cookie not being set
+**Solution**: Ensure `SameSite=None; Secure` is set and site uses HTTPS
+
+### Issue: Waiting room indexed by Google
+**Solution**: Add to robots.txt:
+```
+Disallow: /waiting-room-th.html
+Disallow: /waiting-room-id.html
+```
+
+## 7. Deployment Checklist
+
+### AWS Setup:
+- [ ] Create ElastiCache Redis cluster
+- [ ] Create Lambda function with VPC access
+- [ ] Configure API Gateway
+- [ ] Set environment variables
+- [ ] Test all endpoints
+
+### Fastly Setup:
+- [ ] Add 4 VCL snippets (recv, error, deliver, cache)
+- [ ] Activate VCL version
+- [ ] Test with incognito browser
+
+### Magento Setup:
+- [ ] Upload waiting room HTML files to pub/
+- [ ] Update robots.txt
+- [ ] Test both store views
+
+### Monitoring:
+- [ ] Set up CloudWatch alarms for Lambda errors
+- [ ] Monitor Redis memory usage
+- [ ] Track API Gateway 5xx errors
+
+## 8. Security Best Practices
+
+- ✅ Use HTTPS only
+- ✅ Enable VPC for Lambda
+- ✅ Restrict Redis access to Lambda security group only
+- ✅ Use IAM roles, not access keys
+- ✅ Enable CloudWatch logging(optional)
+- ✅ Set rate limiting on API Gateway
+- ✅ Use Redis AUTH if available
 
 ------------------------------------------------------------------------
 
