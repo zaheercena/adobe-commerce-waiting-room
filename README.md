@@ -14,30 +14,30 @@ Waiting Room – Detailed Technical & Operational Documentation
 │  │ 1. Check if session cookie exists │  │
 │  │ 2. Generate/Get session ID        │  │
 │  └───────────────┬───────────────────┘  │
-│                  │                       │
-│                  │ 3. API Call           │
-│                  ▼                       │
+│                  │                      │
+│                  │ 3. API Call          │
+│                  ▼                      │
 │  ┌───────────────────────────────────┐  │
 │  │ Call API Gateway:                 │  │
 │  │ GET /check/th_store/session123    │  │
 │  └───────────────┬───────────────────┘  │
-└──────────────────┼───────────────────────┘
+└──────────────────┼──────────────────────┘
                    │
                    ▼
 ┌──────────────────────────────────────────┐
-│   AWS Lambda API (Node.js + Redis)   │
+│   AWS Lambda API (Node.js + Redis)       │
 │  ┌────────────────────────────────────┐  │
 │  │ 4. Check Redis:                    │  │
 │  │    - Does session exist?           │  │
-│  │    - Current user count < 35000?    │  │
+│  │    - Current user count < 35000?   │  │
 │  └────────────────┬───────────────────┘  │
 │                   │                      │
 │         ┌─────────┴─────────┐            │
 │         ▼                   ▼            │
-│    ┌─────────┐         ┌─────────┐      │
-│    │ < 35000  │         │ >= 35000 │      │
-│    │ users   │         │ users   │      │
-│    └────┬────┘         └────┬────┘      │
+│    ┌─────────┐         ┌─────────┐       │
+│    │ < 35000 │         │ >= 35000│     │
+│    │ users   │         │ users   │       │
+│    └────┬────┘         └────┬────┘       │
 │         │                   │            │
 │         │ 5a. Response      │ 5b. Resp   │
 │         │ {allowed:true}    │ {allowed:  │
@@ -52,7 +52,7 @@ Waiting Room – Detailed Technical & Operational Documentation
 │  │ Access       │    │ Waiting Room  │  │
 │  │ (200 OK)     │    │ (503 Error)   │  │
 │  └──────┬───────┘    └───────┬───────┘  │
-└─────────┼────────────────────┼───────────┘
+└─────────┼────────────────────┼──────────┘
           │                    │
           ▼                    ▼
     ┌──────────┐         ┌──────────┐
@@ -64,7 +64,7 @@ Waiting Room – Detailed Technical & Operational Documentation
 # Architecture with Serverless Redis
 ```
 ┌─────────────────────────────────────────────────────┐
-│                    35,000 Visitors                   │
+│                    35,000 Visitors                  │
 └─────────────────────┬───────────────────────────────┘
                       │
                       ▼
