@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang='en'>
+<head>
+    <meta charset='UTF-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
+    <meta name="robots" content="noindex, nofollow">
+    <meta name="googlebot" content="noindex, nofollow">
+    <title>Waiting Room - H&M</title>
+    <style>
+        * { 
+        margin: 0; 
+        padding: 0; 
+        box-sizing: border-box; 
+    }
+    
+    body {
+        font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+        background: #ffffff;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #222222;
+    }
+    
+    .container {
+        background: #ffffff;
+        border: 2px solid #f4f4f4;
+        border-radius: 0;
+        padding: 60px 40px;
+        text-align: center;
+        max-width: 500px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+    
+    .logo {
+        width: 80px;
+        height: auto;
+        margin-bottom: 30px;
+    }
+    
+    h1 { 
+        font-size: 3em; 
+        margin-bottom: 20px; 
+        font-weight: 700;
+        color: #E50010;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+    }
+    
+    .status { 
+        font-size: 1.2em; 
+        margin: 30px 0; 
+        color: #222222;
+        font-weight: 400;
+    }
+    
+    .spinner {
+        width: 60px;
+        height: 60px;
+        border: 4px solid #f4f4f4;
+        border-top-color: #E50010;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin: 30px auto;
+    }
+    
+    @keyframes spin { 
+        to { transform: rotate(360deg); } 
+    }
+    
+    .error { 
+        color: #E50010; 
+        margin-top: 20px; 
+        font-size: 0.95em;
+        font-weight: 500;
+    }
+    
+    .info { 
+        font-size: 0.9em; 
+        color: #707070;
+        margin-top: 30px;
+        line-height: 1.5;
+    }
+    
+    .queue-info {
+        background: #fafafa;
+        border: 1px solid #e8e8e8;
+        padding: 25px;
+        border-radius: 0;
+        margin: 25px 0;
+    }
+    
+    .queue-number { 
+        font-size: 2.5em; 
+        font-weight: bold; 
+        margin: 10px 0;
+        color: #E50010;
+    }
+    
+    .debug { 
+        display: none !important;
+        font-size: 0.75em; 
+        color: #999999;
+        margin-top: 20px; 
+        text-align: left;
+        background: #f9f9f9;
+        padding: 12px;
+        border-radius: 0;
+        border-left: 3px solid #E50010;
+        word-break: break-all;
+        font-family: 'Courier New', monospace;
+    }
+    </style>
+</head>
+<body>
+    <div class='container'>
+        <img src='https://XXXXXXXXXX.cloudfront.net/img/HM-logo.svg' alt='H&M Logo' class='logo'>
+        <h2>Waiting Room</h3>
+        <div class='status' id='status'>Checking availability...</div>
+        <div class='spinner' id='spinner'></div>
+        <div class='queue-info' id='queueInfo' style='display:none;'>
+            <div>Current visitors</div>
+            <div class='queue-number' id='currentUsers'>-</div>
+            <div>Available slots: <span id='availableSlots'>-</span></div>
+        </div>
+        <div class='error' id='error'></div>
+        <div class='info'>Please keep this page open. You will be redirected automatically.</div>
+        <div class='debug' id='debug'></div>
+    </div>
+
+    <script>
+        const API_URL = 'https://XXXXXXXXXX.execute-api.ap-southeast-1.amazonaws.com/production/waiting-room-api-production';
+        const RETRY_INTERVAL = 35000;
+        const urlParams = new URLSearchParams(window.location.search);
+        const returnUrl = urlParams.get('return') || '/th_en';
+        let sessionId = getCookie('waiting_room_session') || generateSessionId();
+        
+        function log(msg) {
+            console.log(msg);
+            const debugEl = document.getElementById('debug');
+            debugEl.innerHTML += msg + '<br>';
+        }
+        
+        log('Return URL: ' + returnUrl);
+        log('Session ID: ' + sessionId);
+        log('Current cookies: ' + document.cookie);
+        
+        function generateSessionId() {
+            return 'wr_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+        }
+        
+        function getCookie(name) {
+            const value = `; ${document.cookie}`;
+            const parts = value.split(`; ${name}=`);
+            if (parts.length === 2) return parts.pop().split(';').shift();
+        }
+        
+        function setCookie(name, value, days) {
+            // Try multiple cookie formats to ensure it works
+            const expires = new Date(Date.now() + days * 864e5).toUTCString();
+            
+            // Set cookie for main domain
+            document.cookie = name + '=' + value + '; expires=' + expires + '; path=/; SameSite=None; Secure';
+            
+            // Also set for specific domain
+            document.cookie = name + '=' + value + '; expires=' + expires + '; path=/; domain=th.hm.com; SameSite=None; Secure';
+            
+            log('Cookie set: ' + name + '=' + value);
+            log('Cookies after set: ' + document.cookie);
+        }
+        
+        async function checkAccess() {
+            try {
+                log('Checking access...');
+                const response = await fetch(`${API_URL}/check?session_id=${sessionId}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                log('Check response: ' + JSON.stringify(data));
+                
+                document.getElementById('currentUsers').textContent = data.current_users || 0;
+                document.getElementById('availableSlots').textContent = data.available_slots || 0;
+                document.getElementById('queueInfo').style.display = 'block';
+                
+                if (data.allowed && data.action === 'allow') {
+                    document.getElementById('status').textContent = 'Access granted! Entering...';
+                    await enterSession();
+                } else {
+                    document.getElementById('status').textContent = 'Waiting for available slot...';
+                    document.getElementById('error').textContent = `Queue: ${data.current_users}/${data.max_users}`;
+                    setTimeout(checkAccess, RETRY_INTERVAL);
+                }
+            } catch (error) {
+                console.error('Check failed:', error);
+                log('Check failed: ' + error.message);
+                document.getElementById('status').textContent = 'Checking availability...';
+                document.getElementById('error').textContent = '⚠️ Connection issue. Retrying...';
+                setTimeout(checkAccess, RETRY_INTERVAL);
+            }
+        }
+        
+        async function enterSession() {
+            try {
+                log('Entering session...');
+                const response = await fetch(`${API_URL}/enter?session_id=${sessionId}`, {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
+                });
+                
+                if (!response.ok) throw new Error(`HTTP ${response.status}`);
+                
+                const data = await response.json();
+                log('Enter response: ' + JSON.stringify(data));
+                
+                if (data.success) {
+                    setCookie('waiting_room_session', sessionId, 1);
+                    document.getElementById('status').textContent = '✓ Redirecting to site...';
+                    document.getElementById('spinner').style.display = 'none';
+                    
+                    const redirectUrl = 'https://th.hm.com' + returnUrl;
+                    
+                    log('Redirecting to: ' + redirectUrl);
+                    
+                    setTimeout(() => {
+                        window.location.href = redirectUrl;
+                    }, 2000);
+                } else {
+                    document.getElementById('status').textContent = 'Site is full. Retrying...';
+                    setTimeout(checkAccess, RETRY_INTERVAL);
+                }
+            } catch (error) {
+                console.error('Enter failed:', error);
+                log('Enter failed: ' + error.message);
+                document.getElementById('error').textContent = '⚠️ Failed to enter. Retrying...';
+                setTimeout(checkAccess, RETRY_INTERVAL);
+            }
+        }
+        
+        checkAccess();
+    </script>
+</body>
+</html>
