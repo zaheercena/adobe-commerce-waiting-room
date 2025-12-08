@@ -35,7 +35,7 @@ Waiting Room – Detailed Technical & Operational Documentation
 │         ┌─────────┴─────────┐            │
 │         ▼                   ▼            │
 │    ┌─────────┐         ┌─────────┐       │
-│    │ < 35000 │         │ >= 35000│     │
+│    │ < 35000 │         │ >= 35000│       │
 │    │ users   │         │ users   │       │
 │    └────┬────┘         └────┬────┘       │
 │         │                   │            │
