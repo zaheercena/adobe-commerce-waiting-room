@@ -112,6 +112,7 @@ Type: error
 Priority:10
 Name:waiting_room_redirect
 VCL:
+```
 # Waiting Room - Redirect based on domain
 if (obj.status == 750) {
 set obj.status = 302        ;
@@ -127,6 +128,7 @@ set obj.http.Location = "https://th.hm.com/waiting-room-th.html?return=" + req.u
 set obj.http.Content-Type = "text/html; charset=utf-8";
 return(deliver)                                         ;
 }
+```
 
 Type: recv
 Priority:10
