@@ -1,0 +1,1 @@
+# adobe-commerce-waiting-room
