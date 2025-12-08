@@ -2,6 +2,7 @@
 Waiting Room – Detailed Technical & Operational Documentation
 
 # Flow Diagram:
+```
 ┌─────────────┐
 │   Visitor   │
 └──────┬──────┘
@@ -58,9 +59,10 @@ Waiting Room – Detailed Technical & Operational Documentation
     │ Website  │         │ "Please  │
     │ Content  │         │  Wait"   │
     └──────────┘         └──────────┘
-
+```
 
 # Architecture with Serverless Redis
+```
 ┌─────────────────────────────────────────────────────┐
 │                    35,000 Visitors                   │
 └─────────────────────┬───────────────────────────────┘
@@ -87,7 +89,7 @@ Waiting Room – Detailed Technical & Operational Documentation
          │ - 5,000 ECPUs/sec      │
          │ - 5-15ms latency       │
          └────────────────────────┘
-
+```
 Overview
 
 This document provides a complete end-to-end explanation of how to
