@@ -228,7 +228,7 @@ Stores → Configuration → Advanced → System →
 Full Page Cache → Fastly Configuration → Custom VCL Snippets
 
 Screenshot Reference
-https://prnt.sc/S2F8OQmG5TTe
+https://prnt.sc/S2F8OQmG5TTe,
 https://prnt.sc/a5-BMPsTq0nJ
 
 What You Need
@@ -246,11 +246,11 @@ What This Module Does
 - Works seamlessly with Magento’s Fastly caching
 
 Screenshot Reference for AWS Configure
-https://prnt.sc/pxpWfbSSDaqK
-https://prnt.sc/W4BapQWEhKtf
-https://prnt.sc/XT8N6F7NHHs7
-https://prnt.sc/Rcm5nMpkGGJb
-https://prnt.sc/xe2kvbHeL7NQ
+https://prnt.sc/pxpWfbSSDaqK,
+https://prnt.sc/W4BapQWEhKtf,
+https://prnt.sc/XT8N6F7NHHs7,
+https://prnt.sc/Rcm5nMpkGGJ,
+https://prnt.sc/xe2kvbHeL7NQ,
 https://prnt.sc/bj5Vn13Dfx0R
 
 ------------------------------------------------------------------------
