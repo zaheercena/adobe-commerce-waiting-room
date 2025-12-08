@@ -1,5 +1,92 @@
-# adobe-commerce-waiting-room
+## adobe-commerce-waiting-room
 Waiting Room – Detailed Technical & Operational Documentation
+
+# Flow Diagram:
+┌─────────────┐
+│   Visitor   │
+└──────┬──────┘
+       │ 1. Request website
+       ▼
+┌─────────────────────────────────────────┐
+│         Fastly CDN (VCL)                │
+│  ┌───────────────────────────────────┐  │
+│  │ 1. Check if session cookie exists │  │
+│  │ 2. Generate/Get session ID        │  │
+│  └───────────────┬───────────────────┘  │
+│                  │                       │
+│                  │ 3. API Call           │
+│                  ▼                       │
+│  ┌───────────────────────────────────┐  │
+│  │ Call API Gateway:                 │  │
+│  │ GET /check/th_store/session123    │  │
+│  └───────────────┬───────────────────┘  │
+└──────────────────┼───────────────────────┘
+                   │
+                   ▼
+┌──────────────────────────────────────────┐
+│   AWS Lambda API (Node.js + Redis)   │
+│  ┌────────────────────────────────────┐  │
+│  │ 4. Check Redis:                    │  │
+│  │    - Does session exist?           │  │
+│  │    - Current user count < 35000?    │  │
+│  └────────────────┬───────────────────┘  │
+│                   │                      │
+│         ┌─────────┴─────────┐            │
+│         ▼                   ▼            │
+│    ┌─────────┐         ┌─────────┐      │
+│    │ < 35000  │         │ >= 35000 │      │
+│    │ users   │         │ users   │      │
+│    └────┬────┘         └────┬────┘      │
+│         │                   │            │
+│         │ 5a. Response      │ 5b. Resp   │
+│         │ {allowed:true}    │ {allowed:  │
+│         │                   │  false}    │
+└─────────┼───────────────────┼────────────┘
+          │                   │
+          ▼                   ▼
+┌─────────────────────────────────────────┐
+│         Fastly CDN (VCL)                │
+│  ┌──────────────┐    ┌───────────────┐  │
+│  │ 6a. Allow    │    │ 6b. Show      │  │
+│  │ Access       │    │ Waiting Room  │  │
+│  │ (200 OK)     │    │ (503 Error)   │  │
+│  └──────┬───────┘    └───────┬───────┘  │
+└─────────┼────────────────────┼───────────┘
+          │                    │
+          ▼                    ▼
+    ┌──────────┐         ┌──────────┐
+    │ Website  │         │ "Please  │
+    │ Content  │         │  Wait"   │
+    └──────────┘         └──────────┘
+
+
+# Architecture with Serverless Redis
+┌─────────────────────────────────────────────────────┐
+│                    35,000 Visitors                   │
+└─────────────────────┬───────────────────────────────┘
+                      │
+                      ▼
+              ┌───────────────┐
+              │     Fastly    │ (VCL checks session)
+              └───────┬───────┘
+                      │
+                      ▼
+              ┌───────────────┐
+              │  API Gateway  │ (HTTP API)
+              └───────┬───────┘
+                      │
+                      ▼
+              ┌───────────────┐
+              │ Lambda (100x) │ (Auto-scales)
+              └───────┬───────┘
+                      │
+                      ▼
+         ┌────────────────────────┐
+         │ Serverless Redis       │ (Auto-scales)
+         │ - 10 GB storage        │
+         │ - 5,000 ECPUs/sec      │
+         │ - 5-15ms latency       │
+         └────────────────────────┘
 
 Overview
 
@@ -7,6 +94,8 @@ This document provides a complete end-to-end explanation of how to
 configure a Waiting Room solution using Fastly, AWS S3, CloudFront, and
 Magento’s Fastly module. It is written to be understandable, practical,
 and aligned with real engineering workflows.
+
+
 
 The Waiting Room ensures that during high‑traffic events (flash sales,
 product drops, seasonal peaks), your site remains stable by temporarily
@@ -258,6 +347,7 @@ https://prnt.sc/XT8N6F7NHHs7,
 https://prnt.sc/Rcm5nMpkGGJ,
 https://prnt.sc/xe2kvbHeL7NQ,
 https://prnt.sc/bj5Vn13Dfx0R
+
 
 ------------------------------------------------------------------------
 
