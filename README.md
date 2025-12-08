@@ -19,7 +19,7 @@ Waiting Room – Detailed Technical & Operational Documentation
 │                  ▼                      │
 │  ┌───────────────────────────────────┐  │
 │  │ Call API Gateway:                 │  │
-│  │ GET /check/th_store/session123    │  │
+│  │ GET /check?session_id=session123  │  │
 │  └───────────────┬───────────────────┘  │
 └──────────────────┼──────────────────────┘
                    │
@@ -91,6 +91,58 @@ Waiting Room – Detailed Technical & Operational Documentation
          └────────────────────────┘
 ```
 
+Overview
+
+This document provides a complete end-to-end explanation of how to
+configure a Waiting Room solution using Fastly, AWS S3, CloudFront, and
+Magento’s Fastly module. It is written to be understandable, practical,
+and aligned with real engineering workflows.
+
+
+
+The Waiting Room ensures that during high‑traffic events (flash sales,
+product drops, seasonal peaks), your site remains stable by temporarily
+redirecting excess visitors to a controlled holding page hosted on AWS.
+
+------------------------------------------------------------------------
+
+# 1. AWS Requirements
+
+## 1.1 S3 Bucket (Static Asset Storage)
+
+You will need an S3 bucket that stores the following:
+
+- index.html(in our case it was waiting-room-id.html and waiting-room-th.html) — your waiting room page [keep every styling and scripting in this html files for simplicity]
+
+Important Configuration Points:
+
+- ✔ For Cross-Domain issue you will need to create a subdomain and point to s3 via Cloudfront. in case you don't have access to create/point subdomain then upload simply these HTML files to your PUB directory on Adobe Commerce Cloud/Premis/comunity and skip completely this S3 config part.
+- ✔ Bucket Policy must allow CloudFront access
+- ✔ Upload your static waiting room files to the root or a subfolder
+- ✔ Versioning recommended for safety
+
+Your S3 bucket acts as the origin for CloudFront or may be accessed
+directly depending on your architecture.
+
+------------------------------------------------------------------------
+
+## 1.2 CloudFront Distribution (Recommended)
+
+CloudFront is used to serve the waiting room page globally, reduce
+latency, and avoid unnecessary load on S3.
+
+Key CloudFront Settings:
+
+- Origin: your S3 bucket
+- Viewer Protocol Policy: Redirect HTTP → HTTPS
+- Cache Behavior:
+- HTML → short TTL (TTL = 0 if you need instant updates)
+- CSS/JS/Images → long TTL
+- Invalidations: use /index.html when updating your UI
+
+CloudFront ensures every user in the waiting room gets a fast and stable
+experience regardless of region.
+
 ## 1.3 AWS Lambda + ElastiCache Redis (Session Management)
 
 The waiting room uses a **serverless API** to track concurrent users in real-time.
@@ -113,59 +165,7 @@ REDIS_HOST=your-redis-cluster.cache.amazonaws.com
 REDIS_PORT=6379
 MAX_USERS=5000
 SESSION_TIMEOUT=1800
-
-
-Overview
-
-This document provides a complete end-to-end explanation of how to
-configure a Waiting Room solution using Fastly, AWS S3, CloudFront, and
-Magento’s Fastly module. It is written to be understandable, practical,
-and aligned with real engineering workflows.
-
-
-
-The Waiting Room ensures that during high‑traffic events (flash sales,
-product drops, seasonal peaks), your site remains stable by temporarily
-redirecting excess visitors to a controlled holding page hosted on AWS.
-
-------------------------------------------------------------------------
-
-1. AWS Requirements
-
-1.1 S3 Bucket (Static Asset Storage)
-
-You will need an S3 bucket that stores the following:
-
-- index.html(in our case it was waiting-room-id.html and waiting-room-th.html) — your waiting room page [keep every styling and scripting in this html files for simplicity]
-
-Important Configuration Points:
-
-- ✔ For Cross-Domain issue you will need to create a subdomain and point to s3 via Cloudfront. in case you don't have access to create/point subdomain then upload simply these HTML files to your PUB directory on Adobe Commerce Cloud/Premis/comunity and skip completely this S3 config part.
-- ✔ Bucket Policy must allow CloudFront access
-- ✔ Upload your static waiting room files to the root or a subfolder
-- ✔ Versioning recommended for safety
-
-Your S3 bucket acts as the origin for CloudFront or may be accessed
-directly depending on your architecture.
-
-------------------------------------------------------------------------
-
-1.2 CloudFront Distribution (Recommended)
-
-CloudFront is used to serve the waiting room page globally, reduce
-latency, and avoid unnecessary load on S3.
-
-Key CloudFront Settings:
-
-- Origin: your S3 bucket
-- Viewer Protocol Policy: Redirect HTTP → HTTPS
-- Cache Behavior:
-- HTML → short TTL (TTL = 0 if you need instant updates)
-- CSS/JS/Images → long TTL
-- Invalidations: use /index.html when updating your UI
-
-CloudFront ensures every user in the waiting room gets a fast and stable
-experience regardless of region.
+```
 
 ------------------------------------------------------------------------
 
