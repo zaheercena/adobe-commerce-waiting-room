@@ -350,6 +350,8 @@ https://prnt.sc/Rcm5nMpkGGJ,
 https://prnt.sc/xe2kvbHeL7NQ,
 https://prnt.sc/bj5Vn13Dfx0R
 
+![lambda-configuration](https://private-user-images.githubusercontent.com/17334109/523906616-5c9f759a-6dbd-45e2-a91c-06c629578de0.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMTkxNDksIm5iZiI6MTc2NTIxODg0OSwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MDY2MTYtNWM5Zjc1OWEtNmRiZC00NWUyLWE5MWMtMDZjNjI5NTc4ZGUwLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE4MzQwOVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTMxNGUxYmIxOWVhMGQ5NTcwOGZiOTNhYjI0MTQ3YTM3Y2E0NmMyMzY3MzI2YmE1YTk2NGQ2ZDAzYTljMWQ0MGEmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.jsRyiky4DBiKtbvcjDzoCWPdHhegbZK5Hhd_51vDcuE)
+
 
 ------------------------------------------------------------------------
 
