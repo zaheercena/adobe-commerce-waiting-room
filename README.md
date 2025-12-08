@@ -20,13 +20,11 @@ redirecting excess visitors to a controlled holding page hosted on AWS.
 
 You will need an S3 bucket that stores the following:
 
-- index.html — your waiting room page
-- Supporting assets (CSS, JS, images)
-- Optional dynamic JSON files (e.g., current queue status)
+- index.html(in our case it was waiting-room-id.html and waiting-room-th.html) — your waiting room page [keep every styling and scripting in this html files for simplicity]
 
 Important Configuration Points:
 
-- ✔ Public access disabled
+- ✔ For Cross-Domain issue you will need to create a subdomain and point to s3 via Cloudfront. in case you don't have access to create/point subdomain then upload simply these HTML files to your PUB directory on Adobe Commerce Cloud/Premis/comunity and skip completely this S3 config part.
 - ✔ Bucket Policy must allow CloudFront access
 - ✔ Upload your static waiting room files to the root or a subfolder
 - ✔ Versioning recommended for safety
