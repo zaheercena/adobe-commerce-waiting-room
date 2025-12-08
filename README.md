@@ -134,6 +134,7 @@ Type: recv
 Priority:10
 Name:waiting_room_check
 VCL:
+```
 if (req.http.host == "admin.ecom.gillcapitalinternal.com") {
 return(pass)                                                 ;
 }
@@ -165,26 +166,32 @@ if (!var.has_session) {
 error 750 "Waiting Room";
 }
 }
+```
 
 Type: recv
 Priority:5
 Name:cache_waiting_room
 VCL:
+```
 # Cache both waiting room pages at Fastly edge
 if (req.url.path == "/waiting-room-th.html" || req.url.path == "/waiting-room-id.html") {
 unset req.http.Cookie                                                                     ;
 set req.http.X-Pass-Authorization = "1";
 return(lookup)                                                                            ;
 }
+```
 
 Type: deliver
 Priority:10
 Name:noindex_waiting_room
 VCL:
+```
 # Prevent search engines from indexing waiting room pages
 if (req.url.path == "/waiting-room-th.html" || req.url.path == "/waiting-room-id.html") {
   set resp.http.X-Robots-Tag = "noindex, nofollow";
 }
+```
+
 -------------------------------------VCL Snippet End-------------------------------------
 
 4. How the Waiting Room Actually Works (Conceptual Flow)
