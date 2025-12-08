@@ -1,13 +1,12 @@
 # adobe-commerce-waiting-room
-Fastly Waiting Room – Detailed Technical & Operational Documentation
+Waiting Room – Detailed Technical & Operational Documentation
 
 Overview
 
 This document provides a complete end-to-end explanation of how to
 configure a Waiting Room solution using Fastly, AWS S3, CloudFront, and
 Magento’s Fastly module. It is written to be understandable, practical,
-and aligned with real engineering workflows — the type of documentation
-a human SRE would write and maintain.
+and aligned with real engineering workflows.
 
 The Waiting Room ensures that during high‑traffic events (flash sales,
 product drops, seasonal peaks), your site remains stable by temporarily
