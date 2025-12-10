@@ -127,10 +127,10 @@ You need an AWS account with permissions to create and manage:
 #### 4.2 Store URLs
 You need to know your store URLs. Example:
 ```
-Thailand Store (EN): https://th.hm.com/th_en
-Thailand Store (TH): https://th.hm.com/th_th
-Indonesia Store (EN): https://id.hm.com/id_en
-Indonesia Store (ID): https://id.hm.com/id_id
+Thailand Store (EN): https://th.mywebsite.com/th_en
+Thailand Store (TH): https://th.mywebsite.com/th_th
+Indonesia Store (EN): https://id.mywebsite.com/id_en
+Indonesia Store (ID): https://id.mywebsite.com/id_id
 ```
 
 ---
@@ -732,10 +732,10 @@ if (obj.status == 750) {
   set obj.response = "Found";
   
   # Check which domain and redirect to appropriate waiting room
-  if (req.http.host ~ "id.hm.com") {
-    set obj.http.Location = "https://id.hm.com/waiting-room-id.html?return=" + req.url;
+  if (req.http.host ~ "id.mywebsite.com") {
+    set obj.http.Location = "https://id.mywebsite.com/waiting-room-id.html?return=" + req.url;
   } else {
-    set obj.http.Location = "https://th.hm.com/waiting-room-th.html?return=" + req.url;
+    set obj.http.Location = "https://th.mywebsite.com/waiting-room-th.html?return=" + req.url;
   }
   
   set obj.http.Content-Type = "text/html; charset=utf-8";
@@ -968,6 +968,20 @@ Then update VCL redirect to `/media/waiting-room-th.html`
 
 ---
 
+Screenshot Reference for AWS Configure
+
+# lambda-environment-variables
+![lambda-api-gateway-configuration](https://private-user-images.githubusercontent.com/17334109/523919172-25c4def7-224f-45da-b8e3-7703f24ca64e.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMjEzMjUsIm5iZiI6MTc2NTIyMTAyNSwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MTkxNzItMjVjNGRlZjctMjI0Zi00NWRhLWI4ZTMtNzcwM2YyNGNhNjRlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE5MTAyNVomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTVhYmY3OGYzN2Y5MGQ4NjhjODZkODgwMjFjMmYyMDVjOTUwMDQyNzU3OGYxMjhiMGVjYjhhZTE0ODVkNGVlMDgmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0._PvLWA6vGXqdM4s_BjGEYRfwX-nIm_Zqn4S4zv5q-O8)
+
+# lambda-codebase
+![lambda-codebase](https://private-user-images.githubusercontent.com/17334109/523919042-9c7c40da-30ec-4901-86bd-09a8a838853b.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMjEzODQsIm5iZiI6MTc2NTIyMTA4NCwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MTkwNDItOWM3YzQwZGEtMzBlYy00OTAxLTg2YmQtMDlhOGE4Mzg4NTNiLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE5MTEyNFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWY3ZjM2MTBkYzViZmNjODUyNTFmY2RhNjk1NTRlNDJjMWIwZDI2NTkzZThkM2E4MWZiYmU5YWU2YzFhOTBlZjMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.ixdBe04XxvyHyR7IKN3bEGYxaEHbPlTflZO_JJbDCSI)
+
+# redis-configuration
+![redis-configuration](https://private-user-images.githubusercontent.com/17334109/523918869-e153eb51-e7de-4a8c-95dc-301f157f27b4.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMjE0NzAsIm5iZiI6MTc2NTIyMTE3MCwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MTg4NjktZTE1M2ViNTEtZTdkZS00YThjLTk1ZGMtMzAxZjE1N2YyN2I0LnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE5MTI1MFomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTNiMjQ4NTc4MjQ0ZDhhMjY4NDY3OTJiZGY2N2JjMGU0YzAzZmQyYzcyNjc4MTU1MThjZjEyZDFiMWI3NjY2MmMmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.NhM1s5n0ruzaGcZX6DRAhwUvU1Y9E5q6YH_OGBSPBNo)
+
+# lambda-api-gateway-configuration
+![lambda-api-gateway-configuration](https://private-user-images.githubusercontent.com/17334109/523917888-c24b1459-88ac-474c-b9fd-bb6045a4403e.png?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3NjUyMjE1MzYsIm5iZiI6MTc2NTIyMTIzNiwicGF0aCI6Ii8xNzMzNDEwOS81MjM5MTc4ODgtYzI0YjE0NTktODhhYy00NzRjLWI5ZmQtYmI2MDQ1YTQ0MDNlLnBuZz9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNTEyMDglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjUxMjA4VDE5MTM1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPTdkNjgzNGE2MDFkYjgyNjEyYjVjNTk0MDBiOGNjZjgwYmMzOGVmZTM2YTU1OGY1MDE4Yjg2NTBjM2Q2M2JhMWYmWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.Ezx3q6H-eEe5UStbm78pluMsHkYdQlts7hrDAe5HUV0)
+
 ## Testing & Validation
 
 ### Postman API Testing
@@ -1054,13 +1068,13 @@ Expected Response:
 
 #### Test Scenario 1: First Visit (No Cookie)
 1. Open incognito browser
-2. Visit `https://th.hm.com/th_en`
+2. Visit `https://th.mywebsite.com/th_en`
 3. **Expected:** Redirected to waiting room
 4. **Expected:** After a few seconds, redirected back to site
 5. **Expected:** Cookie `waiting_room_session` is set
 
 #### Test Scenario 2: Return Visit (With Cookie)
-1. Visit `https://th.hm.com/th_en` again
+1. Visit `https://th.mywebsite.com/th_en` again
 2. **Expected:** Direct access, no waiting room
 
 #### Test Scenario 3: Site Full
@@ -1069,7 +1083,7 @@ Expected Response:
 3. **Expected:** Stuck in waiting room with "Site is full" message
 
 #### Test Scenario 4: Multi-Store
-1. Visit `https://id.hm.com/id_en`
+1. Visit `https://id.mywebsite.com/id_en`
 2. **Expected:** Redirected to `waiting-room-id.html`
 3. **Expected:** Redirected back to Indonesia store
 
@@ -1116,7 +1130,7 @@ Expected Response:
 ### Final Validation:
 - [ ] Test first visit (no cookie) → waiting room → redirect
 - [ ] Test return visit (with cookie) → direct access
-- [ ] Test both domains (th.hm.com and id.hm.com)
+- [ ] Test both domains (th.mywebsite.com and id.mywebsite.com)
 - [ ] Test with MAX_USERS=0 → stuck in waiting room
 - [ ] Verify cookies are set correctly
 - [ ] Check robots.txt is blocking waiting room pages
@@ -1208,7 +1222,7 @@ Expected Response:
    ```
 2. Check `X-Robots-Tag` header is present:
    ```bash
-   curl -I https://th.hm.com/waiting-room-th.html | grep X-Robots-Tag
+   curl -I https://th.mywebsite.com/waiting-room-th.html | grep X-Robots-Tag
    ```
 3. Submit removal request in Google Search Console
 4. Wait 24-48 hours for Google to re-crawl
