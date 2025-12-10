@@ -683,7 +683,7 @@ Magento Admin → Stores → Configuration → Advanced → System
 
 ```vcl
 # Skip admin and static assets
-if (req.http.host == "admin.ecom.gillcapitalinternal.com") {
+if (req.http.host == "admin.dashboard.mywebsite.com") {
   return(pass);
 }
 
