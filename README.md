@@ -274,7 +274,7 @@ Before proceeding with implementation, verify:
                   │
                   ▼
 ┌──────────────────────────────────────────┐
-│  AWS Lambda API (Node.js + Redis)       │
+│  AWS Lambda API (Node.js + Redis)        │
 │ ┌────────────────────────────────────┐   │
 │ │ 4. Check Redis:                    │   │
 │ │    - Does session exist?           │   │
@@ -284,7 +284,7 @@ Before proceeding with implementation, verify:
 │      ┌───────────┴───────────┐           │
 │      ▼                       ▼           │
 │ ┌─────────┐            ┌─────────┐       │
-│ │ < 35000  │            │ >= 35000 │       │
+│ │ < 35000 │            │ >= 35000│       │
 │ │  users  │            │  users  │       │
 │ └────┬────┘            └────┬────┘       │
 │      │                      │            │
